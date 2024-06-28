@@ -1,0 +1,9 @@
+name: 'Teste'
+type: module
+description: 'Módulo para upload e processamento de arquivos Excel usando PHPSpreadsheet.'
+core_version_requirement: ^9 || ^10
+package: Custom
+dependencies:
+  - drupal:file
+  - drupal:block
+  - phpspreadsheet

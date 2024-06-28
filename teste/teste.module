@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Código principal do módulo Teste.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_block_info().
+ */
+function teste_block_info() {
+  $blocks['excel_upload_block'] = [
+    'info' => t('Excel Upload Block'),
+  ];
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function teste_block_view($delta = '') {
+  if ($delta == 'excel_upload_block') {
+    // Renderiza o formulário usando um template Twig personalizado.
+    $form = \Drupal::formBuilder()->getForm('Drupal\teste\Form\ExcelUploadForm');
+    return [
+      'subject' => t('Upload Excel File'),
+      'content' => [
+        '#theme' => 'teste_excel_upload_form',
+        '#form' => $form,
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function teste_theme() {
+  return [
+    'teste_excel_upload_form' => [
+      'variables' => ['form' => NULL],
+      'template' => 'teste-excel-upload-form',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_install().
+ */
+function teste_install() {
+  // Cria o diretório de uploads ao instalar o módulo.
+  \Drupal::service('file_system')->mkdir('public://uploads/', NULL, TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function teste_uninstall() {
+  // Remove o diretório de uploads ao desinstalar o módulo.
+  \Drupal::service('file_system')->delete('public://uploads/', TRUE);
+}
